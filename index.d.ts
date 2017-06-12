@@ -359,7 +359,7 @@ declare module 'eris' {
   // thonk, does T have to be a voice connection?
   export class VoiceConnectionManager<T extends VoiceConnection> extends Collection<T> { // owo an undocumented class
     constructor(vcObject: new () => T);
-    join(guildID: string, channelID: string, options: any): Promise<T>; // whats options ???
+    join(guildID: string, channelID: string, options: VoiceResourceOptions): Promise<VoiceConnection>;
     leave(guildID: string): void;
     switch(guildID: string, channelID: string): void;
   }
