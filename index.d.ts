@@ -97,6 +97,7 @@ declare module 'eris' {
     defaultImageSize?: number
   }
 
+  // TODO CommandClient
   export class Client extends EventEmitter {
     token: string;
     bot?: boolean;
@@ -429,8 +430,6 @@ declare module 'eris' {
     removeMessageReactions(messageID: string): Promise<void>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
-    deleteMessages(messageIDs: Array<string>): Promise<void>;
-    purge(limit?: number, filter?: (m: Message) => boolean, before?: string, after?: string): Promise<number>;
   }
 
   export class ExtendedUser extends User {
@@ -572,6 +571,8 @@ declare module 'eris' {
     createInvite(options: { maxAge: number, maxUses: number, temporary: boolean }, reason?: string): Promise<Invite>;
     getWebhooks(): Promise<Array<any>>;
     createWebhook(options: { name: string, avatar: string }, reason?: string): Promise<any>;
+    deleteMessages(messageIDs: Array<string>): Promise<void>;
+    purge(limit?: number, filter?: (m: Message) => boolean, before?: string, after?: string): Promise<number>;
   }
 
   export class GuildIntegration extends Base {

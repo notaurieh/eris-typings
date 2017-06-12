@@ -1,7 +1,6 @@
 ### Eris-Typings
 > Unofficial typings for [abalabahaha's](https://github.com/abalabahaha) [eris](https://github.com/abalabahaha/eris).<br/>
-> Keep in mind these typings are handwritten, and very experimental. End goal is to merge with eris' repository.</br>
-> Current version is targetting master branch of eris.</br>
+> Keep in mind these typings are handwritten, and very experimental. End goal is to merge with eris' repository.
 
 ### Usage
 You can install this library via `typings` CLI tool, or manually. Keep in mind some requirements:
