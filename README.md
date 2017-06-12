@@ -3,6 +3,11 @@
 > Keep in mind these typings are handwritten, and very experimental. End goal is to merge with eris' repository.</br>
 > Current version is targetting master branch of eris.</br>
 
+### Usage
+You can install this library via `typings` CLI tool, or manually. Keep in mind some requirements:
+* Your project has to target ES6
+* You must have either `@types/node` or `dt~node` installed alongside
+
 ### Contributing
 1. Clone the repo
 2. Implement your changes
