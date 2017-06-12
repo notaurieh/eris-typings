@@ -29,6 +29,21 @@ declare module 'eris' {
     fields?: Array<{ name?: string, value?: string, inline?: boolean }>
   }
 
+  type Webhook = {
+    name: string,
+    channel_id: string,
+    token: string,
+    avatar?: string,
+    guild_id: string,
+    id: string,
+    user: {
+      username: string,
+      discriminator: string,
+      id: string,
+      avatar?: string
+    }
+  }
+
   type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: Embed };
   type MessageFile = { file: Buffer | string, name: string };
   type EmojiOptions = { name: string, icon?: string, roles?: Array<string> };
@@ -123,7 +138,7 @@ declare module 'eris' {
     constructor(token: string, options?: ClientOptions);
     connect(): Promise<void>;
     getGateway(): Promise<string>;
-    getBotGateway(): Promise<any>;
+    getBotGateway(): Promise<{ url: string, shards: number }>;
     disconnect(options: { reconnect: boolean }): void;
     joinVoiceChannel(channelID: string, options?: { shared?: boolean, opusOnly?: boolean }): Promise<VoiceConnection>;
     leaveVoiceChannel(channelID: string): void;
@@ -146,15 +161,15 @@ declare module 'eris' {
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
     getChannelInvites(channelID: string): Promise<Array<Invite>>;
     createChannelInvite(channelID: string, options?: { maxAge?: number, maxUses?: number, temporary?: boolean, unique?: boolean }, reason?: string): Promise<Invite>;
-    getChannelWebhooks(channelID: string): Promise<Array<any>>;
-    getWebhook(webhookID: string, token?: string): Promise<any>;
-    createChannelWebhook(channelID: string, options: { name: string, avatar: string }, reason?: string): Promise<any>;
-    editWebhook(webhookID: string, options: { name?: string, avatar?: string }, token?: string, reason?: string): Promise<any>;
+    getChannelWebhooks(channelID: string): Promise<Array<Webhook>>;
+    getWebhook(webhookID: string, token?: string): Promise<Webhook>;
+    createChannelWebhook(channelID: string, options: { name: string, avatar: string }, reason?: string): Promise<Webhook>;
+    editWebhook(webhookID: string, options: { name?: string, avatar?: string }, token?: string, reason?: string): Promise<Webhook>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
     // TODO ???
     executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
-    getGuildWebhooks(guildID: string): Promise<Array<any>>;
+    getGuildWebhooks(guildID: string): Promise<Array<Webhook>>;
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number): Promise<any>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<any>;
     editGuildEmoji(guildID: string, emojiID: string, options: { name?: string, roles?: Array<string> }, reason?: string): Promise<any>;
@@ -516,7 +531,7 @@ declare module 'eris' {
     leave(): Promise<void>;
     getBans(): Promise<Array<User>>;
     editNickname(nick: string): Promise<void>;
-    getWebhooks(): Promise<Array<any>>;
+    getWebhooks(): Promise<Array<Webhook>>;
   }
 
   export class GuildAuditLogEntry extends Base {
@@ -569,8 +584,8 @@ declare module 'eris' {
     deletePermission(overwriteID: string, reason?: string): Promise<void>;
     getInvites(): Promise<Array<Invite>>;
     createInvite(options: { maxAge: number, maxUses: number, temporary: boolean }, reason?: string): Promise<Invite>;
-    getWebhooks(): Promise<Array<any>>;
-    createWebhook(options: { name: string, avatar: string }, reason?: string): Promise<any>;
+    getWebhooks(): Promise<Array<Webhook>>;
+    createWebhook(options: { name: string, avatar: string }, reason?: string): Promise<Webhook>;
     deleteMessages(messageIDs: Array<string>): Promise<void>;
     purge(limit?: number, filter?: (m: Message) => boolean, before?: string, after?: string): Promise<number>;
   }
