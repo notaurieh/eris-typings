@@ -60,6 +60,43 @@ declare module 'eris' {
     id: string
   }
 
+  type UserSettings = {
+    theme: string,
+    status: string,
+    show_current_game: boolean,
+    restricted_guilds: Array<string>,
+    render_reactions: boolean,
+    render_embeds: boolean,
+    message_display_compact: boolean,
+    locale: string,
+    inline_embed_media: boolean,
+    inline_attachment_media: boolean,
+    guild_positions: Array<string>,
+    friend_source_flags: {
+      all: boolean // not sure about other keys, abal heeeelp
+    },
+    explicit_content_filter: number,
+    enable_tts_command: boolean,
+    developer_mode: boolean,
+    detect_platform_accounts: boolean,
+    default_guilds_restricted: boolean,
+    convert_emojis: boolean,
+    afk_timeout: number
+  }
+
+  type GuildSettings = {
+    suppress_everyone: boolean,
+    muted: boolean,
+    mobile_push: boolean,
+    message_notifications: number,
+    guild_id: string,
+    channel_override: Array<{
+      muted: boolean,
+      message_notifications: number,
+      channel_id: string
+    }>
+  }
+
   type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: Embed };
   type MessageFile = { file: Buffer | string, name: string };
   type EmojiOptions = { name: string, icon?: string, roles?: Array<string> };
@@ -148,8 +185,8 @@ declare module 'eris' {
     user: ExtendedUser;
     users: Collection<User>;
     relationships: Collection<Relationship>;
-    userGuildSettings: { [s: string]: any };
-    userSettings: any;
+    userGuildSettings: { [s: string]: GuildSettings };
+    userSettings: UserSettings;
     notes: { [s: string]: string };
     constructor(token: string, options?: ClientOptions);
     connect(): Promise<void>;
@@ -260,8 +297,8 @@ declare module 'eris' {
     getSelfConnections(): Promise<any>;
     editSelfConnection(platform: string, id: string, data: { friendSync: boolean, visibility: number }): Promise<any>;
     deleteSelfConnection(platform: string, id: string): Promise<void>;
-    getSelfSettings(): Promise<any>;
-    editSelfSettings(data: {}): Promise<any>;
+    getSelfSettings(): Promise<UserSettings>;
+    editSelfSettings(data: UserSettings): Promise<UserSettings>;
     getSelfMFACodes(password: string, regenerate?: boolean): Promise<any>;
     enableSelfMFATOTP(secret: string, code: string): Promise<any>;
     disableSelfMFATOTP(code: string): Promise<any>;
