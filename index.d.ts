@@ -44,6 +44,13 @@ declare module 'eris' {
     }
   }
 
+  type GuildEmbed = {
+    channel_id?: string,
+    enabled: boolean
+  }
+
+  type Attachment = { url: string, proxy_url: string, size: number, id: string, filename: string };
+
   type VoiceRegion = {
     name: string,
     deprecated: boolean,
@@ -211,7 +218,7 @@ declare module 'eris' {
     deleteMessage(channelID: string, messageID: string, reason?: string): Promise<void>;
     deleteMessages(channelID: string, messageIDs: Array<string>, reason?: string): Promise<void>;
     purgeChannel(channelID: string, limit?: number, filter?: (m: Message) => boolean, before?: string, after?: string): Promise<number>;
-    getGuildEmbed(guildID: string): Promise<any>;
+    getGuildEmbed(guildID: string): Promise<GuildEmbed>;
     getGuildIntegrations(guildID: string): Promise<Array<GuildIntegration>>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
@@ -299,7 +306,7 @@ declare module 'eris' {
     on(event: "messageReactionRemove", listener: (message: PossiblyUncachedMessage, emoji: EmojiOptions, userID: string) => void): this;
     on(event: "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): this;
     on(event: "messageUpdate", listener: (message: Message, oldMessage?: {
-      attachments: Array<any>,
+      attachments: Array<Attachment>,
       embeds: Array<Embed>,
       content: string,
       editedTimestamp?: number,
@@ -517,7 +524,7 @@ declare module 'eris' {
     getRESTMembers(limit?: number, after?: string): Promise<Array<Member>>;
     getRESTMember(memberID: string): Promise<Member>;
     getRESTRoles(): Promise<Array<Role>>;
-    getEmbed(): Promise<any>;
+    getEmbed(): Promise<GuildEmbed>;
     getVoiceRegions(): Promise<Array<VoiceRegion>>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     deleteRole(roleID: string): Promise<void>;
@@ -686,7 +693,7 @@ declare module 'eris' {
     editedTimestamp?: number;
     tts: boolean;
     mentionEveryone: boolean;
-    attachments: Array<any>; // TODO what props do these have
+    attachments: Array<Attachment>;
     embeds: Array<Embed>;
     reactions: { [s: string]: any, count: number, me: boolean };
     command: boolean;
