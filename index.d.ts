@@ -1,7 +1,35 @@
 declare module 'eris' {
   import { EventEmitter } from 'events';
   import { Readable as ReadableStream } from 'stream';
-  type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: any };
+
+  type WebhookPayload = {
+    content?: string,
+    file?: { file: Buffer, name: string } | Array<{ file: Buffer, name: string}>,
+    embeds?: Array<Embed>,
+    username?: string,
+    avatarURL?: string,
+    tts?: boolean,
+    wait?: boolean,
+    disableEveryone?: boolean
+  }
+
+  // TODO: Not sure if this is right
+  type Embed = {
+    title?: string,
+    type: string,
+    description?: string,
+    url?: string,
+    timestamp?: number,
+    color?: number,
+    footer?: { text: string, icon_url?: string, proxy_icon_url?: string },
+    image?: { url?: string, proxy_url?: string, height?: number, width?: number },
+    thumbnail?: { url?: string, proxy_url?: string, height?: number, width?: number },
+    video?: { url: string, height?: number, width?: number },
+    provider?: { name: string, url?: string },
+    fields?: Array<{ name?: string, value?: string, inline?: boolean }>
+  }
+
+  type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: Embed };
   type MessageFile = { file: Buffer | string, name: string };
   type EmojiOptions = { name: string, icon?: string, roles?: Array<string> };
   type IntegrationOptions = { expireBehavior: string, expireGracePeriod: string, enableEmoticons: string };
@@ -121,10 +149,9 @@ declare module 'eris' {
     getWebhook(webhookID: string, token?: string): Promise<any>;
     createChannelWebhook(channelID: string, options: { name: string, avatar: string }, reason?: string): Promise<any>;
     editWebhook(webhookID: string, options: { name?: string, avatar?: string }, token?: string, reason?: string): Promise<any>;
-    executeWebhook(webhookID: string, token: string, options: {
-      // TODO
-    }): Promise<void>;
-    execiteSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
+    executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
+    // TODO ???
+    executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
     getGuildWebhooks(guildID: string): Promise<Array<any>>;
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number): Promise<any>;
@@ -248,7 +275,7 @@ declare module 'eris' {
     on(event: "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): this;
     on(event: "messageUpdate", listener: (message: Message, oldMessage?: {
       attachments: Array<any>,
-      embeds: Array<any>,
+      embeds: Array<Embed>,
       content: string,
       editedTimestamp?: number,
       mentionedBy?: any,
@@ -389,7 +416,6 @@ declare module 'eris' {
     getMessage(messageID: string): Promise<Message>;
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Array<Message>>;
     getPins(): Promise<Array<Message>>;
-    // change embed to a type alias
     createMessage(
       content: MessageContent,
       file?: MessageFile
@@ -635,8 +661,8 @@ declare module 'eris' {
     editedTimestamp?: number;
     tts: boolean;
     mentionEveryone: boolean;
-    attachments: Array<any>; // improve this and embed type definition
-    embeds: Array<any>;
+    attachments: Array<any>; // TODO what props do these have
+    embeds: Array<Embed>;
     reactions: { [s: string]: any, count: number, me: boolean };
     command: boolean;
     constructor(data: any, client: Client);
