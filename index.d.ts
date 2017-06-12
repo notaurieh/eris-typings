@@ -517,7 +517,7 @@ declare module 'eris' {
     memberCount: number;
     roles: Collection<Role>;
     shard: Shard;
-    features: Array<any>;
+    features: Array<string>;
     emojis: Array<EmojiOptions>;
     iconURL?: string;
     explicitContentFilter: number;
