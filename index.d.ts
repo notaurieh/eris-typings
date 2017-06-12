@@ -310,7 +310,14 @@ declare module 'eris' {
     enableSelfMFATOTP(secret: string, code: string): Promise<any>;
     disableSelfMFATOTP(code: string): Promise<any>;
     getSelfBilling(): Promise<any>;
-    getSelfPayments(): Promise<any>;
+    getSelfPayments(): Promise<Array<{
+      status: number,
+      amount_refunded: number,
+      description: string,
+      created_at: string, // date
+      currency: string,
+      amount: number
+    }>>;
     addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     deleteSelfPremiumSubscription(): Promise<void>;
     getRESTChannel(channelID: string): Promise<Channel>;
