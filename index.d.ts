@@ -494,7 +494,7 @@ declare module 'eris' {
     id: string;
     createdAt: number;
     constructor(id: string);
-    toJSON(arg: any, cache: Array<any>): Object;
+    toJSON(arg: any, cache: Array<any>): any;
     inspect(): string;
   }
 
