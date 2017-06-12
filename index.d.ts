@@ -236,7 +236,20 @@ declare module 'eris' {
     kickGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     deleteGuild(guildID: string): Promise<void>;
     leaveGuild(guildID: string): Promise<void>;
-    getOAuthApplication(appID?: string): Promise<any>;
+    getOAuthApplication(appID?: string): Promise<{
+      description: string,
+      name: string,
+      owner: {
+        username: string,
+        discriminator: string,
+        id: string,
+        avatar?: string
+      },
+      bot_public: boolean,
+      bot_require_code_grant: boolean,
+      id: string,
+      icon?: string
+    }>;
     addRelationship(userID: string, block?: boolean): Promise<void>;
     removeRelationship(userID: string): Promise<void>;
     addGroupRecipient(groupID: string, userID: string): Promise<void>;
