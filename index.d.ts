@@ -104,6 +104,17 @@ declare module 'eris' {
     connected_accounts: Array<{ verified: boolean, type: string, id: string, name: string }>
   }
 
+  type Connection = {
+    verified: boolean,
+    revoked: boolean,
+    integrations: Array<any>, // TODO ????
+    visibility: number,
+    friend_sync: boolean,
+    type: string,
+    id: string,
+    name: string
+  }
+
   type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: Embed };
   type MessageFile = { file: Buffer | string, name: string };
   type EmojiOptions = { name: string, icon?: string, roles?: Array<string> };
@@ -301,8 +312,8 @@ declare module 'eris' {
     getUserProfile(userID: string): Promise<UserProfile>;
     editUserNote(userID: string, note: string): Promise<void>;
     deleteUserNote(userID: string): Promise<void>;
-    getSelfConnections(): Promise<any>;
-    editSelfConnection(platform: string, id: string, data: { friendSync: boolean, visibility: number }): Promise<any>;
+    getSelfConnections(): Promise<Array<Connection>>;
+    editSelfConnection(platform: string, id: string, data: { friendSync: boolean, visibility: number }): Promise<Connection>;
     deleteSelfConnection(platform: string, id: string): Promise<void>;
     getSelfSettings(): Promise<UserSettings>;
     editSelfSettings(data: UserSettings): Promise<UserSettings>;
