@@ -1,0 +1,30 @@
+{
+  "name": "eris-typings",
+  "version": "0.1.0",
+  "description": "Unofficial typescript typings for abalabahaha/eris",
+  "main": "index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aurieh/eris-typings.git"
+  },
+  "keywords": [
+    "eris",
+    "discordapp",
+    "typings"
+  ],
+  "author": "aurieh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aurieh/eris-typings/issues"
+  },
+  "homepage": "https://github.com/aurieh/eris-typings#readme",
+  "devDependencies": {
+    "typescript": "^2.3.4"
+  },
+  "dependencies": {
+    "@types/node": "^7.0.29"
+  }
+}
