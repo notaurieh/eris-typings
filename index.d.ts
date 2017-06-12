@@ -280,7 +280,7 @@ declare module 'eris' {
     on(event: "voiceChannelJoin", listener: (member: Member, newChannel: GuildChannel) => void): this;
     on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: GuildChannel) => void): this;
     on(event: "voiceChannelSwitch", listener: (member: Member, newChannel: GuildChannel, oldChannel: GuildChannel) => void): this;
-    on(event: "voiceStateUpdate", listener: (member: Member, oldState: { mute: boolean, deaf: boolean, selfMute: boolean, selfDeaf: Boolean }) => void): this;
+    on(event: "voiceStateUpdate", listener: (member: Member, oldState: { mute: boolean, deaf: boolean, selfMute: boolean, selfDeaf: boolean }) => void): this;
     on(event: "warn", listener: (message: string, id: number) => void): this;
   }
 
