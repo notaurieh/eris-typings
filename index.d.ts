@@ -97,6 +97,13 @@ declare module 'eris' {
     }>
   }
 
+  type UserProfile = {
+    premium_since?: number,
+    mutual_guilds: Array<{ nick?: string, id: string }>,
+    user: { username: string, discriminator: string, flags: number, id: string, avatar?: string },
+    connected_accounts: Array<{ verified: boolean, type: string, id: string, name: string }>
+  }
+
   type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: Embed };
   type MessageFile = { file: Buffer | string, name: string };
   type EmojiOptions = { name: string, icon?: string, roles?: Array<string> };
@@ -291,7 +298,7 @@ declare module 'eris' {
     removeRelationship(userID: string): Promise<void>;
     addGroupRecipient(groupID: string, userID: string): Promise<void>;
     removeGroupRecipient(groupID: string, userID: string): Promise<void>;
-    getUserProfile(userID: string): Promise<any>;
+    getUserProfile(userID: string): Promise<UserProfile>;
     editUserNote(userID: string, note: string): Promise<void>;
     deleteUserNote(userID: string): Promise<void>;
     getSelfConnections(): Promise<any>;
@@ -835,7 +842,7 @@ declare module 'eris' {
     getDMChannel(): Promise<PrivateChannel>;
     addRelationship(block?: boolean): Promise<void>;
     removeRelationship(): Promise<void>;
-    getProfile(): Promise<any>;
+    getProfile(): Promise<UserProfile>;
     editNote(note: string): Promise<void>;
     deleteNote(): Promise<void>;
   }
