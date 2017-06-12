@@ -44,6 +44,15 @@ declare module 'eris' {
     }
   }
 
+  type VoiceRegion = {
+    name: string,
+    deprecated: boolean,
+    custom: boolean,
+    vip: boolean,
+    optimal: boolean,
+    id: string
+  }
+
   type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: Embed };
   type MessageFile = { file: Buffer | string, name: string };
   type EmojiOptions = { name: string, icon?: string, roles?: Array<string> };
@@ -171,8 +180,8 @@ declare module 'eris' {
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
     getGuildWebhooks(guildID: string): Promise<Array<Webhook>>;
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number): Promise<any>;
-    createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<any>;
-    editGuildEmoji(guildID: string, emojiID: string, options: { name?: string, roles?: Array<string> }, reason?: string): Promise<any>;
+    createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<EmojiOptions>;
+    editGuildEmoji(guildID: string, emojiID: string, options: { name?: string, roles?: Array<string> }, reason?: string): Promise<EmojiOptions>;
     deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
     createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
@@ -180,7 +189,7 @@ declare module 'eris' {
     deleteRole(guildID: string, roleID: string, reason?: string): Promise<void>;
     getPruneCount(guildID: string, days: number): Promise<number>;
     pruneMembers(guildID: string, days: number, reason?: string): Promise<number>;
-    getVoiceRegions(guildID: string): Promise<Array<any>>;
+    getVoiceRegions(guildID: string): Promise<Array<VoiceRegion>>;
     getInvite(inviteID: string, withCounts?: boolean): Promise<Invite>;
     acceptInvite(inviteID: string): Promise<Invite>;
     deleteInvite(inviteID: string, reason?: string): Promise<void>;
@@ -509,7 +518,7 @@ declare module 'eris' {
     getRESTMember(memberID: string): Promise<Member>;
     getRESTRoles(): Promise<Array<Role>>;
     getEmbed(): Promise<any>;
-    getVoiceRegions(): Promise<Array<any>>;
+    getVoiceRegions(): Promise<Array<VoiceRegion>>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     deleteRole(roleID: string): Promise<void>;
     getAuditLogs(limit?: number, before?: string, actionType?: number): Promise<any>;
