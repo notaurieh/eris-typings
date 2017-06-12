@@ -123,7 +123,7 @@ declare module 'eris' {
     name?: string,
     region?: string,
     icon?: string,
-    verificationLevel?: number, 
+    verificationLevel?: number,
     defaultNotifications?: number,
     afkChannelID?: string,
     afkTimeout?: number,
@@ -320,7 +320,26 @@ declare module 'eris' {
     getSelfMFACodes(password: string, regenerate?: boolean): Promise<any>;
     enableSelfMFATOTP(secret: string, code: string): Promise<any>;
     disableSelfMFATOTP(code: string): Promise<any>;
-    getSelfBilling(): Promise<any>;
+    getSelfBilling(): Promise<{
+      premium_subscription?: {
+        status: number,
+        ended_at?: string,
+        canceled_at?: string,
+        created_at: string,
+        current_period_end?: string,
+        current_period_start?: string,
+        plan: string
+      },
+      payment_source?: {
+        type: string,
+        brand: string,
+        invalid: boolean,
+        last_4: number,
+        expires_year: number,
+        expires_month: number
+      },
+      payment_gateway?: string
+    }>;
     getSelfPayments(): Promise<Array<{
       status: number,
       amount_refunded: number,
@@ -514,7 +533,7 @@ declare module 'eris' {
     unavailable: boolean;
     constructor(data: any, channel: GroupChannel);
   }
-  
+
   export class Channel extends Base {
     id: string;
     createdAt: number;
