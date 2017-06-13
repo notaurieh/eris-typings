@@ -5,7 +5,7 @@
 ### Usage
 You can install this library via `typings` CLI tool, or manually. Keep in mind some requirements:
 * Your project has to target ES6 or above
-* You must have either `@types/node` installed alongside
+* You must have `@types/node` installed alongside
 
 #### Example
 * `npm i -g typescript typings`
