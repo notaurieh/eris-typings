@@ -419,7 +419,7 @@ declare module 'eris' {
         url?: string
       }
     }) => void): this;
-    on(event: "rawWS", listener: (packet: any, id: number) => void): this;
+    on(event: "rawWS", listener: (packet: { op: number, t?: string, d?: any, s?: number }, id: number) => void): this;
     on(event: "relationshipAdd", listener: (relationship: Relationship) => void): this;
     on(event: "relationshipRemove", listener: (relationship: Relationship) => void): this;
     on(event: "relationshipUpdate", listener: (relationship: Relationship, oldRelationship: { type: number } ) => void): this;
