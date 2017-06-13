@@ -4,8 +4,44 @@
 
 ### Usage
 You can install this library via `typings` CLI tool, or manually. Keep in mind some requirements:
-* Your project has to target ES6
-* You must have either `@types/node` or `dt~node` installed alongside
+* Your project has to target ES6 or above
+* You must have either `@types/node` installed alongside
+
+#### Example
+* `npm i -g typescript typings`
+* `mkdir eris-typescript-example && cd eris-typescript-example`
+* `typings init`
+* `npm init`
+* `tsc --init`
+* `npm i -S eris && npm --save-dev @types/node`
+* `typings install eris=github:aurieh/eris-typings --save --global`
+* Change `target` in `compilerOptions` of `tsconfig.json` to `es6` or above
+* Make a file called `bot.ts`
+
+```typescript
+// bot.js
+// most of type annotations are not needed in an actual project, this is just an example
+import { Client, Message } from 'eris';
+
+const client: Client = new Client('YOUR TOKEN HERE');
+
+client.on('messageCreate', async (message: Message) => {
+  if (message.author.bot) return;
+  if (message.content.startsWith('ping')) {
+    try {
+      message.channel.createMessage('pong');
+    } catch (e) {
+      console.error(e);
+    }
+  }
+});
+
+client.on('ready', () => {
+  console.log(`Ready as ${client.user.username}#${client.user.discriminator}`);
+});
+
+client.connect();
+```
 
 ### Contributing
 1. Clone the repo

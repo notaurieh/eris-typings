@@ -317,6 +317,7 @@ declare module 'eris' {
     deleteSelfConnection(platform: string, id: string): Promise<void>;
     getSelfSettings(): Promise<UserSettings>;
     editSelfSettings(data: UserSettings): Promise<UserSettings>;
+    // TODO
     getSelfMFACodes(password: string, regenerate?: boolean): Promise<any>;
     enableSelfMFATOTP(secret: string, code: string): Promise<any>;
     disableSelfMFATOTP(code: string): Promise<any>;
@@ -622,6 +623,7 @@ declare module 'eris' {
     getVoiceRegions(): Promise<Array<VoiceRegion>>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     deleteRole(roleID: string): Promise<void>;
+    // TODO
     getAuditLogs(limit?: number, before?: string, actionType?: number): Promise<any>;
     getIntegrations(): Promise<GuildIntegration>;
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
