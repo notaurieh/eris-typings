@@ -318,9 +318,9 @@ declare module 'eris' {
     getSelfSettings(): Promise<UserSettings>;
     editSelfSettings(data: UserSettings): Promise<UserSettings>;
     // TODO
-    getSelfMFACodes(password: string, regenerate?: boolean): Promise<any>;
-    enableSelfMFATOTP(secret: string, code: string): Promise<any>;
-    disableSelfMFATOTP(code: string): Promise<any>;
+    getSelfMFACodes(password: string, regenerate?: boolean): Promise<{ backup_codes: Array<{ code: string, consumed: boolean }> }>;
+    enableSelfMFATOTP(secret: string, code: string): Promise<{ token: string, backup_codes: Array<{ code: string, consumed: boolean }> }>;
+    disableSelfMFATOTP(code: string): Promise<{ token: string }>;
     getSelfBilling(): Promise<{
       premium_subscription?: {
         status: number,
