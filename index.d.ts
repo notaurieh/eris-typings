@@ -115,6 +115,16 @@ declare module 'eris' {
     name: string
   }
 
+  type GuildAuditLog = {
+    users: Array<User>,
+    entries: Array<GuildAuditLogEntry>
+  }
+
+  // TODO: Does this have more stuff?
+  type BaseData = {
+    id: string
+  }
+
   type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: Embed };
   type MessageFile = { file: Buffer | string, name: string };
   type EmojiOptions = { name: string, icon?: string, roles?: Array<string> };
@@ -162,6 +172,7 @@ declare module 'eris' {
     sampleRate?: number
   }
   type PossiblyUncachedMessage = Message | { id: string, channel: Channel };
+  type RawPacket = { op: number, t?: string, d?: any, s?: number };
   type ClientOptions = {
     autoreconnect?: boolean,
     compress?: boolean,
@@ -241,7 +252,7 @@ declare module 'eris' {
     executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
     getGuildWebhooks(guildID: string): Promise<Array<Webhook>>;
-    getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number): Promise<any>;
+    getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number): Promise<GuildAuditLog>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<EmojiOptions>;
     editGuildEmoji(guildID: string, emojiID: string, options: { name?: string, roles?: Array<string> }, reason?: string): Promise<EmojiOptions>;
     deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
@@ -419,7 +430,7 @@ declare module 'eris' {
         url?: string
       }
     }) => void): this;
-    on(event: "rawWS", listener: (packet: { op: number, t?: string, d?: any, s?: number }, id: number) => void): this;
+    on(event: "rawWS", listener: (packet: RawPacket, id: number) => void): this;
     on(event: "relationshipAdd", listener: (relationship: Relationship) => void): this;
     on(event: "relationshipRemove", listener: (relationship: Relationship) => void): this;
     on(event: "relationshipUpdate", listener: (relationship: Relationship, oldRelationship: { type: number } ) => void): this;
@@ -429,7 +440,7 @@ declare module 'eris' {
     on(event: "shardResume", listener: (id: number) => void): this;
     on(event: "typingStart", listener: (channel: Channel, user: User) => void): this;
     on(event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): this;
-    on(event: "unknown", listener: (packet: any, id: number) => void): this;
+    on(event: "unknown", listener: (packet: RawPacket, id: number) => void): this;
     on(event: "userUpdate", listener: (user: User, oldUser: { username: string, discriminator: string, avatar?: string }) => void): this;
     on(event: "voiceChannelJoin", listener: (member: Member, newChannel: GuildChannel) => void): this;
     on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: GuildChannel) => void): this;
@@ -495,8 +506,8 @@ declare module 'eris' {
     id: string;
     createdAt: number;
     constructor(id: string);
-    toJSON(arg: any, cache: Array<any>): any;
-    inspect(): string;
+    toJSON(arg: any, cache: Array<String | any>): { [s: string]: any }; // TODO is `arg` even used
+    inspect(): this;
   }
 
   export class Bucket {
@@ -509,7 +520,7 @@ declare module 'eris' {
     queue(func: Function): void;
   }
 
-  export class Collection<T extends { id: any }> extends Map<string, T> {
+  export class Collection<T extends { id: string }> extends Map<string, T> {
     baseObject: new () => T;
     limit?: number;
     constructor(baseObject: new () => T, limit?: number);
@@ -532,13 +543,13 @@ declare module 'eris' {
     ringing?: Array<string>;
     region?: string;
     unavailable: boolean;
-    constructor(data: any, channel: GroupChannel);
+    constructor(data: BaseData, channel: GroupChannel);
   }
 
   export class Channel extends Base {
     id: string;
     createdAt: number;
-    constructor(data: any);
+    constructor(data: BaseData);
     sentTyping(): Promise<void>;
     getMessage(messageID: string): Promise<Message>;
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Array<Message>>;
@@ -603,7 +614,7 @@ declare module 'eris' {
     emojis: Array<EmojiOptions>;
     iconURL?: string;
     explicitContentFilter: number;
-    constructor(data: any, client: Client);
+    constructor(data: BaseData, client: Client);
     fetchAllMembers(): void;
     dynamicIconURL(format: string, size: number): string;
     createChannel(name: string, type: string): Promise<GuildChannel>;
@@ -624,7 +635,7 @@ declare module 'eris' {
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     deleteRole(roleID: string): Promise<void>;
     // TODO
-    getAuditLogs(limit?: number, before?: string, actionType?: number): Promise<any>;
+    getAuditLogs(limit?: number, before?: string, actionType?: number): Promise<GuildAuditLog>;
     getIntegrations(): Promise<GuildIntegration>;
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
     syncIntegration(integrationID: string): Promise<void>;
@@ -662,7 +673,7 @@ declare module 'eris' {
     membersRemoved?: number;
     member?: Member | any;
     role?: Role | any;
-    constructor(data: any, guild: Guild);
+    constructor(data: BaseData, guild: Guild);
   }
 
   export class GuildChannel extends Channel {
@@ -680,7 +691,7 @@ declare module 'eris' {
     userLimit?: number;
     nsfw: boolean;
     voiceMembers?: Collection<Member>;
-    constructor(data: any, guild: Guild, messageLimit: number);
+    constructor(data: BaseData, guild: Guild, messageLimit: number);
     permissionsOf(memberID: string): Permission;
     edit(
       options: {
@@ -717,7 +728,7 @@ declare module 'eris' {
     enableEmoticons: boolean;
     subscriberCount: number;
     syncedAt: number;
-    constructor(data: any, guild: Guild);
+    constructor(data: BaseData, guild: Guild);
     edit(options: { expireBehavior: string, expireGracePeriod: string, enableEmoticons: string }): Promise<void>;
     delete(): Promise<void>;
     sync(): Promise<void>;
@@ -736,7 +747,7 @@ declare module 'eris' {
     revoked?: boolean;
     presenceCount?: number;
     memberCount?: number;
-    constructor(data: any, client: Client);
+    constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;
   }
 
@@ -761,7 +772,7 @@ declare module 'eris' {
     defaultAvatarURL: string;
     avatarURL: string;
     staticAvatarURL: string;
-    constructor(data: any, guild: Guild);
+    constructor(data: BaseData, guild: Guild);
     edit(
       options: MemberOptions, reason?: string
     ): Promise<void>;
@@ -793,7 +804,7 @@ declare module 'eris' {
     embeds: Array<Embed>;
     reactions: { [s: string]: any, count: number, me: boolean };
     command: boolean;
-    constructor(data: any, client: Client);
+    constructor(data: BaseData, client: Client);
     edit(content: MessageContent): Promise<Message>;
     pin(): Promise<void>;
     unpin(): Promise<void>;
@@ -834,7 +845,7 @@ declare module 'eris' {
     type: number;
     status: string;
     game?: GamePresence;
-    constructor(data: any, client: Client);
+    constructor(data: BaseData, client: Client);
   }
 
   export class Role extends Base {
@@ -850,7 +861,7 @@ declare module 'eris' {
     position: number;
     permissions: Permission;
     json: { [s: string]: boolean };
-    constructor(data: any, guild: Guild);
+    constructor(data: BaseData, guild: Guild);
     edit(options: RoleOptions, reason?: string): Promise<Role>;
     editPosition(position: number): Promise<void>;
     delete(reason?: string): Promise<void>;
@@ -861,7 +872,7 @@ declare module 'eris' {
     createdAt: number;
     unavailable: boolean;
     shard: Shard;
-    constructor(data: any, client: Client);
+    constructor(data: BaseData, client: Client);
   }
 
   export class User extends Base {
@@ -876,7 +887,7 @@ declare module 'eris' {
     defaultAvatarURL: string;
     avatarURL: string;
     staticAvatarURL: string;
-    constructor(data: any, client: Client);
+    constructor(data: BaseData, client: Client);
     dynamicIconURL(format?: string, size?: number): string;
     getDMChannel(): Promise<PrivateChannel>;
     addRelationship(block?: boolean): Promise<void>;
@@ -896,7 +907,7 @@ declare module 'eris' {
     suppress: boolean;
     selfMute: boolean;
     selfDeaf: boolean;
-    constructor(data: any);
+    constructor(data: BaseData);
   }
 
   export class Shard extends EventEmitter {
