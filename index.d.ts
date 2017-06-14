@@ -506,7 +506,7 @@ declare module 'eris' {
     id: string;
     createdAt: number;
     constructor(id: string);
-    toJSON(arg: any, cache: Array<String | any>): { [s: string]: any }; // TODO is `arg` even used
+    toJSON(arg: any, cache: Array<string | any>): { [s: string]: any }; // TODO is `arg` even used
     inspect(): this;
   }
 
