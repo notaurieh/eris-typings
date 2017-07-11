@@ -193,8 +193,34 @@ declare module 'eris' {
     defaultImageFormat?: string,
     defaultImageSize?: number
   }
+  type CommandClientOptions = {
+    defaultHelpCommand?: boolean,
+    description?: string,
+    ignoreBots?: boolean,
+    ignoreSelf?: boolean,
+    name?: string,
+    owner?: string,
+    prefix?: string,
+    defaultCommandOptions?: CommandOptions // TODO: CommandOptions
+  }
+  type CommandOptions = {
+    aliases?: Array<string>,
+    caseInsensitive?: boolean,
+    deleteCommand?: boolean,
+    argsRequired?: boolean,
+    guildOnly?: boolean,
+    dmOnly?: boolean,
+    description?: string,
+    fullDescription?: string,
+    usage?: string,
+    requirements?: {
+      userIDs?: Array<string>,
+      permissions?: { [s: string]: boolean }
+    }
+  }
+  type CommandGeneratorFunction = (msg: Message, args: Array<string>) => string | void;
+  type CommandGenerator = CommandGeneratorFunction | string | Array<string> | Array<CommandGeneratorFunction>;
 
-  // TODO CommandClient
   export class Client extends EventEmitter {
     token: string;
     bot?: boolean;
@@ -803,7 +829,7 @@ declare module 'eris' {
     attachments: Array<Attachment>;
     embeds: Array<Embed>;
     reactions: { [s: string]: any, count: number, me: boolean };
-    command: boolean;
+    command: Command;
     constructor(data: BaseData, client: Client);
     edit(content: MessageContent): Promise<Message>;
     pin(): Promise<void>;
@@ -926,6 +952,25 @@ declare module 'eris' {
     editStatus(status?: string, game?: GamePresence): void;
     on(event: string, listener: Function): this;
     on(event: "disconnect", listener: (err: Error) => void): this;
+  }
+
+  // TODO: Do we need all properties of Command, as it has a lot of stuff
+  export class Command {
+    subcommands: { [s: string]: Command };
+    constructor(label: string, generate: CommandGenerator, options?: CommandOptions);
+    registerSubcommandAlias(alias: string, label: string): void;
+    registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): void;
+    unregisterSubcommand(label: string): void;
+  }
+
+  export class CommandClient extends Client {
+    commands: { [s: string]: Command };
+    constructor(token: string, options?: ClientOptions, commandOptions?: CommandClientOptions);
+    onMessageCreate(msg: Message): void;
+    registerGuildPrefix(guildID: string, prefix: Array<string> | string): void;
+    registerCommandAlias(alias: string, label: string): void;
+    registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): void;
+    unregisterCommand(label: string): void;
   }
 }
 
