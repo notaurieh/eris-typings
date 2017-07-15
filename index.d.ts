@@ -201,7 +201,7 @@ declare module 'eris' {
     name?: string,
     owner?: string,
     prefix?: string,
-    defaultCommandOptions?: CommandOptions // TODO: CommandOptions
+    defaultCommandOptions?: CommandOptions
   }
   type CommandOptions = {
     aliases?: Array<string>,
@@ -274,7 +274,6 @@ declare module 'eris' {
     createChannelWebhook(channelID: string, options: { name: string, avatar: string }, reason?: string): Promise<Webhook>;
     editWebhook(webhookID: string, options: { name?: string, avatar?: string }, token?: string, reason?: string): Promise<Webhook>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
-    // TODO ???
     executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
     getGuildWebhooks(guildID: string): Promise<Array<Webhook>>;
@@ -354,7 +353,6 @@ declare module 'eris' {
     deleteSelfConnection(platform: string, id: string): Promise<void>;
     getSelfSettings(): Promise<UserSettings>;
     editSelfSettings(data: UserSettings): Promise<UserSettings>;
-    // TODO
     getSelfMFACodes(password: string, regenerate?: boolean): Promise<{ backup_codes: Array<{ code: string, consumed: boolean }> }>;
     enableSelfMFATOTP(secret: string, code: string): Promise<{ token: string, backup_codes: Array<{ code: string, consumed: boolean }> }>;
     disableSelfMFATOTP(code: string): Promise<{ token: string }>;
@@ -488,7 +486,7 @@ declare module 'eris' {
       playTime: number,
       pausedTimestamp?: number,
       pausedTime?: number,
-      options: VoiceResourceOptions // ????
+      options: VoiceResourceOptions
     }
     constructor(id: string, options?: { shard?: Shard, shared?: boolean, opusOnly?: boolean });
     pause(): void;
@@ -520,7 +518,6 @@ declare module 'eris' {
     constructor(type: string);
   }
 
-  // thonk, does T have to be a voice connection?
   export class VoiceConnectionManager<T extends VoiceConnection> extends Collection<T> { // owo an undocumented class
     constructor(vcObject: new () => T);
     join(guildID: string, channelID: string, options: VoiceResourceOptions): Promise<VoiceConnection>;
@@ -660,7 +657,6 @@ declare module 'eris' {
     getVoiceRegions(): Promise<Array<VoiceRegion>>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     deleteRole(roleID: string): Promise<void>;
-    // TODO
     getAuditLogs(limit?: number, before?: string, actionType?: number): Promise<GuildAuditLog>;
     getIntegrations(): Promise<GuildIntegration>;
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
@@ -813,7 +809,7 @@ declare module 'eris' {
     id: string;
     createdAt: number;
     channel: Channel;
-    // guild: Guild?;
+    guild?: Guild;
     timestamp: number;
     type: number;
     author: User;
