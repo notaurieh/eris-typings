@@ -19,7 +19,7 @@ You can install this library via `typings` CLI tool, or manually. Keep in mind s
 * Make a file called `bot.ts`
 
 ```typescript
-// bot.js
+// bot.ts
 // most of type annotations are not needed in an actual project, this is just an example
 import { Client, Message } from 'eris';
 
